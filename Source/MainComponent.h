@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "GUI/Footer.h"
 
 //==============================================================================
 /*
@@ -50,13 +51,9 @@ private:
 	void onStopFile();
 	void onVolumeChanged();
 
+	Footer* footer;
+
 	TextButton* buttonOpen;
-	TextButton* buttonPlay;
-	TextButton* buttonStop;
-
-	Slider* volumeSlider;
-
-	Label* musicLabel;
 	
 	AudioFormatManager formatManager;
 	std::unique_ptr<AudioFormatReaderSource> readerSource;

@@ -7,7 +7,7 @@ MainComponent::MainComponent()
 {
     // Make sure you set the size of the component after
     // you add any child components.
-    setSize (300, 300);
+    setSize (500, 400);
 
     // Some platforms require permissions to open input channels so request that here
     if (RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
@@ -23,37 +23,26 @@ MainComponent::MainComponent()
     }
 
 	buttonOpen = new TextButton("Open...");
-	buttonPlay = new TextButton("Play");
-	buttonStop = new TextButton("Stop");
-	musicLabel = new Label("Select Song");
-	volumeSlider = new Slider();
+
+	footer = new Footer();
 
 	getLookAndFeel().setColour(Slider::thumbColourId, Colour(0xFF339FEB));
 	getLookAndFeel().setColour(Slider::trackColourId, Colour(0xFF339FEB));
 	getLookAndFeel().setColour(Slider::backgroundColourId, Colour(0x22339FEB));
 
 	addAndMakeVisible(buttonOpen);
-	addAndMakeVisible(buttonPlay);
-	addAndMakeVisible(buttonStop);
-	addAndMakeVisible(musicLabel);
-	addAndMakeVisible(volumeSlider);
 
-	buttonPlay->setEnabled(false);
-	buttonStop->setEnabled(false);
+	addAndMakeVisible(footer);
+
+	footer->setTopLeftPosition(0, 350);
 
 	buttonOpen->setBounds(10, 10, 280, 20);
-	buttonPlay->setBounds(10, 40, 280, 20);
-	buttonStop->setBounds(10, 70, 280, 20);
-	musicLabel->setBounds(10, 100, 280, 20);
-	volumeSlider->setBounds(10, 130, 280, 20);
-
-	volumeSlider->setRange(0.f, 100.f, 1);
-	volumeSlider->setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
+	
 
 	buttonOpen->onClick = [this] { onOpenFile(); };
-	buttonPlay->onClick = [this] { onPlayFile(); };
-	buttonStop->onClick = [this] { onStopFile(); };
-	volumeSlider->onValueChange = [this] { onVolumeChanged(); };
+//	buttonPlay->onClick = [this] { onPlayFile(); };
+	//buttonStop->onClick = [this] { onStopFile(); };
+	//volumeSlider->onValueChange = [this] { onVolumeChanged(); };
 
 	formatManager.registerBasicFormats();
 	transportSource.addChangeListener(this);
@@ -66,6 +55,7 @@ MainComponent::MainComponent()
 MainComponent::~MainComponent()
 {
     // This shuts down the audio device and clears the audio source.
+	delete footer;
 	deleteAllChildren();
     shutdownAudio();
 
@@ -151,18 +141,18 @@ void MainComponent::changeState(const TransportState newState)
 
 		switch (state) {
 			case Stopped:
-				buttonStop->setEnabled(false);
-				buttonPlay->setEnabled(true);
+			//	buttonStop->setEnabled(false);
+			//	buttonPlay->setEnabled(true);
 				transportSource.setPosition(0.0f);
 			break;
 
 			case Starting:
-				buttonPlay->setEnabled(false);
+				//buttonPlay->setEnabled(false);
 				transportSource.start();
 			break;
 
 			case Playing:
-				buttonStop->setEnabled(true);
+				//buttonStop->setEnabled(true);
 			break;
 
 			case Pausing:
@@ -170,8 +160,8 @@ void MainComponent::changeState(const TransportState newState)
 			break;
 
 			case Paused:
-				buttonPlay->setButtonText("Resume");
-				buttonStop->setButtonText("Return to zero");
+				//buttonPlay->setButtonText("Resume");
+				//buttonStop->setButtonText("Return to zero");
 			break;
 
 			case Stopping:
@@ -195,8 +185,8 @@ void MainComponent::onOpenFile()
 			if (reader != nullptr) {
 				auto newSource = std::make_unique<AudioFormatReaderSource>(reader, true);
 				transportSource.setSource(newSource.get(), 0, nullptr, reader->sampleRate);
-				musicLabel->setText(file.getFileName(), NotificationType::dontSendNotification);
-				buttonPlay->setEnabled(true);
+			//	musicLabel->setText(file.getFileName(), NotificationType::dontSendNotification);
+			//	buttonPlay->setEnabled(true);
 				readerSource.reset(newSource.release());
 			}
 		}
@@ -221,7 +211,7 @@ void MainComponent::onStopFile()
 
 void MainComponent::onVolumeChanged()
 {
-	volume = volumeSlider->getValue();
+	//volume = volumeSlider->getValue();
 	DBG("volume " << volume);
 }
 
