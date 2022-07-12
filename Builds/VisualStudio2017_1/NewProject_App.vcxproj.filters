@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="NewProject\Source\GUI">
+      <UniqueIdentifier>{746A4E35-8351-D846-706A-8218A712B158}</UniqueIdentifier>
+    </Filter>
     <Filter Include="NewProject\Source">
       <UniqueIdentifier>{CBA2DCCD-1D2C-5CB2-5048-C7D8353D0443}</UniqueIdentifier>
     </Filter>
@@ -448,6 +451,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\GUI\Footer.cpp">
+      <Filter>NewProject\Source\GUI</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>NewProject\Source</Filter>
     </ClCompile>
@@ -2568,6 +2574,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\GUI\Footer.h">
+      <Filter>NewProject\Source\GUI</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>NewProject\Source</Filter>
     </ClInclude>

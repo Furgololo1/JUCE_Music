@@ -1,13 +1,15 @@
 #pragma once
 
-#include <JuceHeader.h>
 #include "GUI/Footer.h"
+#include <JuceHeader.h>
 
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
+
+//class Footer;
 
 enum TransportState
 {
@@ -51,7 +53,7 @@ private:
 	void onStopFile();
 	void onVolumeChanged();
 
-	Footer* footer;
+	std::unique_ptr<Footer> footer;
 
 	TextButton* buttonOpen;
 	

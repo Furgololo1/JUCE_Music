@@ -5,9 +5,7 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    // Make sure you set the size of the component after
-    // you add any child components.
-    setSize (500, 400);
+    setSize (900, 700);
 
     // Some platforms require permissions to open input channels so request that here
     if (RuntimePermissions::isRequired (RuntimePermissions::recordAudio)
@@ -24,23 +22,21 @@ MainComponent::MainComponent()
 
 	buttonOpen = new TextButton("Open...");
 
-	footer = new Footer();
-
 	getLookAndFeel().setColour(Slider::thumbColourId, Colour(0xFF339FEB));
 	getLookAndFeel().setColour(Slider::trackColourId, Colour(0xFF339FEB));
 	getLookAndFeel().setColour(Slider::backgroundColourId, Colour(0x22339FEB));
 
 	addAndMakeVisible(buttonOpen);
 
-	addAndMakeVisible(footer);
-
-	footer->setTopLeftPosition(0, 350);
+	footer = std::make_unique<Footer>(900, 100);
+	addAndMakeVisible(footer.get());
+	footer->setTopLeftPosition(0, 600);
 
 	buttonOpen->setBounds(10, 10, 280, 20);
 	
 
-	buttonOpen->onClick = [this] { onOpenFile(); };
-//	buttonPlay->onClick = [this] { onPlayFile(); };
+	//buttonOpen->onClick = [this] { onOpenFile(); };
+	//buttonPlay->onClick = [this] { onPlayFile(); };
 	//buttonStop->onClick = [this] { onStopFile(); };
 	//volumeSlider->onValueChange = [this] { onVolumeChanged(); };
 
@@ -54,11 +50,8 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
-    // This shuts down the audio device and clears the audio source.
-	delete footer;
-	deleteAllChildren();
+	delete buttonOpen;
     shutdownAudio();
-
 }
 
 //==============================================================================

@@ -15,23 +15,32 @@
 //==============================================================================
 /*
 */
+
+
 class Footer  : public juce::Component
 {
 public:
     Footer();
-    ~Footer() override;
+	Footer(int const sizeX, int const sizeY);
+	~Footer() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
+
 private:
 
-	TextButton* buttonPlay;
-	TextButton* buttonStop;
-	Slider* volumeSlider;
-	Label* musicLabel;
+	std::unique_ptr<ImageButton> CreateImageButton(Image& const img, Colour& const colour, int& size, int x, int y);
 
-	ImageButton* imageButtonPlay;
+	std::unique_ptr< Label > musicLabel;
+
+	std::unique_ptr < ImageButton > iBPlay;
+	std::unique_ptr < ImageButton > iBNext;
+	std::unique_ptr < ImageButton > iBPrevious;
+
+	std::unique_ptr< Slider > volumeSlider;
+	std::unique_ptr< Slider > musicSlider;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Footer)
 };

@@ -14,48 +14,44 @@
 //==============================================================================
 Footer::Footer()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
+}
 
-	setSize(500, 50);
+Footer::Footer(int const sizeX, int const sizeY)
+{
+	setSize(sizeX, sizeY);
 
+	int playButtonsSize = 25;
+	int smallButtonsSize = 20;
 
-	float const smallButtonsSize = 20;
+	File playImageFile = File::getCurrentWorkingDirectory().getChildFile("F:/JuceProjects/JUCE_Music/Images/play.png");
+	File nextImageFile = File::getCurrentWorkingDirectory().getChildFile("F:/JuceProjects/JUCE_Music/Images/next.png");
+	File previousImageFile = File::getCurrentWorkingDirectory().getChildFile("F:/JuceProjects/JUCE_Music/Images/previous.png");
 
-	Image playImage = ImageCache::getFromFile("F:/JuceProjects/JUCE_Music/Images/play.png");
+	Image playImage = ImageCache::getFromFile(playImageFile);
+	Image nextImage = ImageCache::getFromFile(nextImageFile);
+	Image prevoiusImage = ImageCache::getFromFile(previousImageFile);
 
-	buttonPlay = new TextButton("Play");
-	buttonStop = new TextButton("Stop");
-	musicLabel = new Label("Select Song");
-	volumeSlider = new Slider();
+	volumeSlider = std::make_unique<Slider>();
+	musicSlider = std::make_unique<Slider>();
 
-	imageButtonPlay = new ImageButton();
+	//addAndMakeVisible(volumeSlider.get());
+	addAndMakeVisible(musicSlider.get());
 
-	addAndMakeVisible(buttonPlay);
-	addAndMakeVisible(imageButtonPlay);
-	addAndMakeVisible(buttonStop);
-	addAndMakeVisible(musicLabel);
-	addAndMakeVisible(volumeSlider);
+	Point<int> coords;
+	coords.addXY(sizeX, sizeY);
 
-	buttonPlay->setEnabled(false);
-	buttonStop->setEnabled(false);
+	iBPlay = CreateImageButton(playImage, Colour(0xFF0193FA), playButtonsSize, coords.getX()/2, coords.getY() / 4);
+	iBPrevious = CreateImageButton(prevoiusImage, Colour(0xFF0193FA), smallButtonsSize, (coords.getX() / 2) - smallButtonsSize*2, coords.getY() / 4);
+	iBNext = CreateImageButton(nextImage, Colour(0xFF0193FA), smallButtonsSize, (coords.getX()/2) + smallButtonsSize*2, coords.getY() / 4);
 
-	juce::Rectangle<int> parentBounds = getLocalBounds();
-
-	imageButtonPlay->setBounds( parentBounds.getCentreX() - smallButtonsSize, parentBounds.getCentreY() - smallButtonsSize,
-						   smallButtonsSize, smallButtonsSize);
-	//buttonStop->setBounds((getWidth() / 2) + 40, getHeight() / 2, 40, 20);
-	//musicLabel->setBounds(10, 10, 280, 20);
-	//volumeSlider->setBounds(getWidth() / 5, (getHeight() / 3) * 2, 280, 20);
-
-	volumeSlider->setRange(0.f, 100.f, 1);
-	volumeSlider->setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
+	volumeSlider->setBounds(100, 25, 100, 50);
+	musicSlider->setBounds(sizeX / 6, sizeY / 2, (sizeX/3)*2, sizeY/4);
+	musicSlider->setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0, 0);
 
 }
 
 Footer::~Footer()
 {
-	deleteAllChildren();
 }
 
 void Footer::paint (juce::Graphics& g)
@@ -80,7 +76,22 @@ void Footer::paint (juce::Graphics& g)
 
 void Footer::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+}
+
+std::unique_ptr<ImageButton> Footer::CreateImageButton(Image & const img, Colour & const colour, int& size, int x, int y)
+{
+	std::unique_ptr<ImageButton> btn = std::make_unique<ImageButton>();
+
+	btn->setImages(false, true, true,
+		img, 1.0f, Colour(0xFF0193FA),
+		img, 0.5f, Colour(0xFF0193FA),
+		img, 0.2f, Colour(0xFF0193FA), 1.0f);
+
+	btn->setSize(size, size);
+	btn->setCentrePosition(x, y);
+
+	addAndMakeVisible(btn.get());
+
+	return std::move(btn);
 
 }
